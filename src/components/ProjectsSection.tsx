@@ -8,10 +8,9 @@ interface Project {
   num: string;
   category: string;
   name: string;
-  slug: string;
+  liveUrl?: string;
   col1: [string, string];
   col2: string;
-  liveUrl?: string;
 }
 
 const PROJECTS: Project[] = [
@@ -19,71 +18,11 @@ const PROJECTS: Project[] = [
     num: '01',
     category: 'Live',
     name: 'Sayd Hub',
-    slug: 'saydhub',
     liveUrl: 'https://saydhub.net',
-    col1: [
-      'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055344_5eff02e0-87a5-41ce-b64f-eb08da8f33db.png&w=1280&q=85',
-      'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055431_11d841fd-8b41-46a5-82e4-b04f2407a7d8.png&w=1280&q=85',
-    ],
-    col2:
-      'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055451_e317bf2d-28d4-48cc-86b0-6f72f25b6327.png&w=1280&q=85',
-  },
-  {
-    num: '02',
-    category: 'Personal',
-    name: 'Cloud-Based Load Balancer',
-    slug: 'loadbalancer',
-    col1: [
-      'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055654_911201c5-36d9-4bc6-bac7-331adfce159f.png&w=1280&q=85',
-      'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055723_5ceda0b8-d9c2-4665-b2e3-83ba19ba76d1.png&w=1280&q=85',
-    ],
-    col2:
-      'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055753_adc5dcbd-a8e6-49c0-b43a-9b030d835cea.png&w=1280&q=85',
-  },
-  {
-    num: '03',
-    category: 'Personal',
-    name: 'Warehouse Inventory System',
-    slug: 'warehouse',
-    col1: [
-      'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055759_963cfb0b-4bd1-4b0f-9d0a-09bd6cf95b2f.png&w=1280&q=85',
-      'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_060108_438f781a-9846-4dcc-89ab-c4e6cb830f5b.png&w=1280&q=85',
-    ],
-    col2:
-      'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055818_9d062121-ad7e-46b9-999a-1a6a692ef1ee.png&w=1280&q=85',
+    col1: ['/projects/saydhub-1.png', '/projects/saydhub-2.png'],
+    col2: '/projects/saydhub-3.png',
   },
 ];
-
-function ProjectImg({
-  primary,
-  fallback,
-  alt,
-  className,
-  style,
-}: {
-  primary: string;
-  fallback: string;
-  alt: string;
-  className?: string;
-  style?: React.CSSProperties;
-}) {
-  return (
-    <img
-      src={primary}
-      alt={alt}
-      loading="lazy"
-      className={className}
-      style={style}
-      onError={(e) => {
-        // No real screenshot in public/projects yet → fall back to the template mockup.
-        const img = e.currentTarget;
-        if (img.dataset.fellBack) return;
-        img.dataset.fellBack = '1';
-        img.src = fallback;
-      }}
-    />
-  );
-}
 
 function ProjectCard({
   project,
@@ -132,26 +71,26 @@ function ProjectCard({
         {/* Image grid */}
         <div className="flex gap-3 sm:gap-4">
           <div className="flex flex-col gap-3 sm:gap-4" style={{ width: '40%' }}>
-            <ProjectImg
-              primary={`/projects/${project.slug}-1.png`}
-              fallback={project.col1[0]}
+            <img
+              src={project.col1[0]}
               alt={`${project.name} preview 1`}
+              loading="lazy"
               className="w-full object-cover rounded-[40px] sm:rounded-[50px] md:rounded-[60px]"
               style={{ height: 'clamp(130px, 16vw, 230px)' }}
             />
-            <ProjectImg
-              primary={`/projects/${project.slug}-2.png`}
-              fallback={project.col1[1]}
+            <img
+              src={project.col1[1]}
               alt={`${project.name} preview 2`}
+              loading="lazy"
               className="w-full object-cover rounded-[40px] sm:rounded-[50px] md:rounded-[60px]"
               style={{ height: 'clamp(160px, 22vw, 340px)' }}
             />
           </div>
           <div style={{ width: '60%' }}>
-            <ProjectImg
-              primary={`/projects/${project.slug}-3.png`}
-              fallback={project.col2}
+            <img
+              src={project.col2}
               alt={`${project.name} preview 3`}
+              loading="lazy"
               className="w-full h-full object-cover rounded-[40px] sm:rounded-[50px] md:rounded-[60px]"
             />
           </div>
@@ -180,7 +119,7 @@ export default function ProjectsSection() {
         y={40}
         className="hero-heading font-black uppercase leading-none tracking-tight text-center mb-12 sm:mb-16"
       >
-        <span style={{ fontSize: 'clamp(3rem, 12vw, 160px)' }}>Project</span>
+        <span style={{ fontSize: 'clamp(3rem, 12vw, 160px)' }}>Projects</span>
       </FadeIn>
 
       <div ref={container}>

@@ -1,5 +1,6 @@
 import FadeIn from './FadeIn';
 import ContactButton from './ContactButton';
+import { Mail, Phone, MapPin } from 'lucide-react';
 
 const SOCIAL_LINKS = [
   { label: 'GitHub', href: 'https://github.com/johnyusufuayuba-arch' },
@@ -7,6 +8,12 @@ const SOCIAL_LINKS = [
     label: 'LinkedIn',
     href: 'https://www.linkedin.com/in/ayuba-john-yusufu-4b2133363',
   },
+];
+
+const DETAILS = [
+  { Icon: Mail, label: 'Johnyusufuayuba@gmail.com', href: 'mailto:Johnyusufuayuba@gmail.com' },
+  { Icon: Phone, label: '+44 7490 524299', href: 'tel:+447490524299' },
+  { Icon: MapPin, label: 'Nottingham, UK', href: null },
 ];
 
 export default function ContactSection() {
@@ -37,11 +44,44 @@ export default function ContactSection() {
           </span>
         </FadeIn>
 
+        {/* Contact details */}
+        <FadeIn
+          delay={0.15}
+          y={20}
+          className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4 sm:gap-x-8 sm:gap-y-3"
+        >
+          {DETAILS.map(({ Icon, label, href }) => {
+            const inner = (
+              <span className="inline-flex items-center gap-2.5 text-[#D7E2EA]/85">
+                <Icon size={18} strokeWidth={1.75} className="text-[#D7E2EA]/60 shrink-0" />
+                <span className="tracking-wide" style={{ fontSize: 'clamp(0.9rem, 1.6vw, 1.1rem)' }}>
+                  {label}
+                </span>
+              </span>
+            );
+            return href ? (
+              <a
+                key={label}
+                href={href}
+                className="transition-opacity duration-200 hover:opacity-70"
+              >
+                {inner}
+              </a>
+            ) : (
+              <span key={label}>{inner}</span>
+            );
+          })}
+        </FadeIn>
+
         <FadeIn delay={0.2} y={20}>
           <ContactButton />
         </FadeIn>
 
-        <FadeIn delay={0.3} y={20} className="flex flex-wrap items-center justify-center gap-4 sm:gap-5">
+        <FadeIn
+          delay={0.3}
+          y={20}
+          className="flex flex-wrap items-center justify-center gap-4 sm:gap-5"
+        >
           {SOCIAL_LINKS.map((link) => (
             <a
               key={link.label}

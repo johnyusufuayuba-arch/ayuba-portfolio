@@ -1,12 +1,21 @@
 import FadeIn from './FadeIn';
-import Magnet from './Magnet';
 import ContactButton from './ContactButton';
+import CVButton from './CVButton';
+import TypewriterText from './TypewriterText';
+import Starfield from './Starfield';
 
 const NAV_LINKS = ['About', 'Services', 'Work', 'Contact'];
+const TAGLINE =
+  'a full-stack developer building striking, production-ready web apps and e-commerce';
 
 export default function HeroSection() {
   return (
-    <section className="relative h-screen flex flex-col" style={{ overflowX: 'clip' }}>
+    <section
+      className="relative min-h-screen flex flex-col overflow-hidden"
+      style={{ background: '#050509' }}
+    >
+      <Starfield />
+
       {/* Navbar */}
       <FadeIn
         as="nav"
@@ -25,60 +34,50 @@ export default function HeroSection() {
         ))}
       </FadeIn>
 
-      {/* Hero heading */}
-      <div className="overflow-hidden px-6 md:px-10 mt-6 sm:mt-4 md:-mt-5">
-        <FadeIn
-          as="h1"
-          delay={0.15}
-          y={40}
-          className="hero-heading font-black uppercase tracking-tight leading-none whitespace-nowrap w-full text-[14vw] sm:text-[15vw] md:text-[16vw] lg:text-[17.5vw]"
-        >
-          Hi, i&apos;m ayuba
-        </FadeIn>
-      </div>
-
-      {/* Bottom bar */}
-      <div className="mt-auto flex justify-between items-end px-6 md:px-10 pb-7 sm:pb-8 md:pb-10">
-        <FadeIn
-          as="p"
-          delay={0.35}
-          y={20}
-          className="text-[#D7E2EA] font-light uppercase tracking-wide leading-snug max-w-[160px] sm:max-w-[220px] md:max-w-[260px]"
-        >
-          <span style={{ fontSize: 'clamp(0.75rem, 1.4vw, 1.5rem)' }}>
-            a full-stack developer building striking, production-ready web apps and e-commerce
-          </span>
-        </FadeIn>
-
-        <FadeIn delay={0.5} y={20}>
-          <ContactButton />
-        </FadeIn>
-      </div>
-
-      {/* Portrait — outer div handles centering transforms, inner FadeIn/Magnet animate independently */}
-      <div className="absolute left-1/2 -translate-x-1/2 z-10 top-1/2 -translate-y-1/2 sm:top-auto sm:translate-y-0 sm:bottom-0">
-        <FadeIn delay={0.6} y={30}>
-          <Magnet
-            padding={150}
-            strength={3}
-            activeTransition="transform 0.3s ease-out"
-            inactiveTransition="transform 0.6s ease-in-out"
+      {/* Centred hero content */}
+      <div className="relative z-10 flex-1 flex flex-col justify-center px-6 md:px-10 py-12">
+        {/* Availability pill */}
+        <FadeIn delay={0.15} y={20}>
+          <a
+            href="#contact"
+            className="inline-flex items-center gap-2.5 rounded-full border border-[#D7E2EA]/30 bg-[#D7E2EA]/[0.04] px-4 py-2 mb-6 sm:mb-8 w-fit transition-colors duration-200 hover:bg-[#D7E2EA]/[0.08]"
           >
-            <img
-              src="/portrait.png"
-              alt="Ayuba Yusufu portrait"
-              className="w-[280px] sm:w-[360px] md:w-[440px] lg:w-[520px] select-none pointer-events-none"
-              draggable={false}
-              onError={(e) => {
-                // Until a real /portrait.png is added to public/, fall back to the template figure.
-                const img = e.currentTarget;
-                if (img.dataset.fellBack) return;
-                img.dataset.fellBack = '1';
-                img.src =
-                  'https://shrug-person-78902957.figma.site/_components/v2/d24c01ad3a56fc65e942a1f501eb73db42d7cf9a/Rectangle_40443.81459862.png';
-              }}
+            <span
+              className="avail-dot inline-block w-2 h-2 rounded-full"
+              style={{ background: '#5BD17F', boxShadow: '0 0 8px #5BD17F' }}
             />
-          </Magnet>
+            <span className="text-[#D7E2EA] uppercase tracking-widest text-[0.65rem] sm:text-xs">
+              Open to 2026 placement
+            </span>
+          </a>
+        </FadeIn>
+
+        {/* Typewriter name */}
+        <h1
+          className="font-black uppercase tracking-tight leading-[1.02] mb-6 sm:mb-8"
+          style={{ fontSize: 'clamp(2.5rem, 8.5vw, 7.5rem)' }}
+        >
+          <TypewriterText
+            text="Hi, I'm Ayuba Yusufu"
+            textClassName="hero-heading"
+            speed={70}
+            startDelay={350}
+          />
+        </h1>
+
+        {/* Typewriter tagline (types in after the name) */}
+        <TypewriterText
+          text={TAGLINE}
+          speed={22}
+          startDelay={1850}
+          className="block text-[#D7E2EA] font-light uppercase tracking-wide leading-snug max-w-[420px] sm:max-w-[520px] mb-8 sm:mb-10"
+          style={{ fontSize: 'clamp(0.8rem, 1.5vw, 1.5rem)' }}
+        />
+
+        {/* Calls to action */}
+        <FadeIn delay={1.1} y={20} className="flex flex-wrap items-center gap-4">
+          <ContactButton />
+          <CVButton />
         </FadeIn>
       </div>
     </section>

@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { Fragment, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import type { MotionValue } from 'framer-motion';
 
@@ -18,15 +18,12 @@ function Char({
   progress: MotionValue<number>;
 }) {
   const opacity = useTransform(progress, range, [0.2, 1]);
-  const display = char === ' ' ? '\u00A0' : char;
 
   return (
     <span style={{ position: 'relative', display: 'inline-block' }}>
-      <span style={{ opacity: 0 }}>{display}</span>
-      <motion.span
-        style={{ position: 'absolute', left: 0, top: 0, opacity }}
-      >
-        {display}
+      <span style={{ opacity: 0 }}>{char}</span>
+      <motion.span style={{ position: 'absolute', left: 0, top: 0, opacity }}>
+        {char}
       </motion.span>
     </span>
   );
@@ -39,15 +36,33 @@ export default function AnimatedText({ text, className, style }: AnimatedTextPro
     offset: ['start 0.8', 'end 0.2'],
   });
 
-  const chars = text.split('');
+  // Split into words so the browser can only break between words (never mid-word),
+  // but keep a single global character counter so the reveal still sweeps
+  // smoothly left-to-right across the whole paragraph.
+  const words = text.split(' ');
+  const totalChars = words.reduce((sum, w) => sum + w.length, 0);
+  let charCounter = 0;
 
   return (
     <p ref={ref} className={className} style={style}>
-      {chars.map((char, i) => {
-        const start = i / chars.length;
-        const end = start + 1 / chars.length;
+      {words.map((word, wi) => {
+        const chars = word.split('').map((char, ci) => {
+          const i = charCounter;
+          charCounter += 1;
+          return (
+            <Char
+              key={ci}
+              char={char}
+              range={[i / totalChars, (i + 1) / totalChars]}
+              progress={scrollYProgress}
+            />
+          );
+        });
         return (
-          <Char key={i} char={char} range={[start, end]} progress={scrollYProgress} />
+          <Fragment key={wi}>
+            <span style={{ display: 'inline-block', whiteSpace: 'nowrap' }}>{chars}</span>
+            {wi < words.length - 1 ? ' ' : null}
+          </Fragment>
         );
       })}
     </p>

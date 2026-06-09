@@ -28,14 +28,12 @@ const SERVICES: Service[] = [
   {
     num: '04',
     name: 'Systems & Software',
-    description:
-      'Backend systems, data handling and desktop tools in Java, Python and C++.',
+    description: 'Backend systems, data handling and desktop tools in Java and C++.',
   },
   {
     num: '05',
     name: 'UI Design',
-    description:
-      'Clean, modern interfaces with care for layout, typography and motion.',
+    description: 'Clean, modern interfaces with care for layout, typography and motion.',
   },
 ];
 

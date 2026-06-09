@@ -1,41 +1,53 @@
 import { useEffect, useRef, useState } from 'react';
 
-const IMAGES = [
-  'https://motionsites.ai/assets/hero-space-voyage-preview-eECLH3Yc.gif',
-  'https://motionsites.ai/assets/hero-codenest-preview-Cgppc2qV.gif',
-  'https://motionsites.ai/assets/hero-vex-ventures-preview-BczMFIiw.gif',
-  'https://motionsites.ai/assets/hero-stellar-ai-v2-preview-DjvxjG3C.gif',
-  'https://motionsites.ai/assets/hero-asme-preview-B_nGDnTP.gif',
-  'https://motionsites.ai/assets/hero-transform-data-preview-Cx5OU29N.gif',
-  'https://motionsites.ai/assets/hero-vitara-preview-Cjz2QYyU.gif',
-  'https://motionsites.ai/assets/hero-terra-preview-BFjrCr7T.gif',
-  'https://motionsites.ai/assets/hero-skyelite-preview-DHaZIgUv.gif',
-  'https://motionsites.ai/assets/hero-aethera-preview-DknSlcTa.gif',
-  'https://motionsites.ai/assets/hero-designpro-preview-D8c5_een.gif',
-  'https://motionsites.ai/assets/hero-stellar-ai-preview-D3HL6bw1.gif',
-  'https://motionsites.ai/assets/hero-xportfolio-preview-D4A8maiC.gif',
-  'https://motionsites.ai/assets/hero-orbit-web3-preview-BXt4OttD.gif',
-  'https://motionsites.ai/assets/hero-nexora-preview-cx5HmUgo.gif',
-  'https://motionsites.ai/assets/hero-evr-ventures-preview-DZxeVFEX.gif',
-  'https://motionsites.ai/assets/hero-planet-orbit-preview-DWAP8Z1P.gif',
-  'https://motionsites.ai/assets/hero-new-era-preview-CocuDUm9.gif',
-  'https://motionsites.ai/assets/hero-wealth-preview-B70idl_u.gif',
-  'https://motionsites.ai/assets/hero-luminex-preview-CxOP7ce6.gif',
-  'https://motionsites.ai/assets/hero-celestia-preview-0yO3jXO8.gif',
+interface Tech {
+  name: string;
+  slug: string; // simpleicons.org slug
+}
+
+const TECHS: Tech[] = [
+  { name: 'React', slug: 'react' },
+  { name: 'Next.js', slug: 'nextdotjs' },
+  { name: 'TypeScript', slug: 'typescript' },
+  { name: 'JavaScript', slug: 'javascript' },
+  { name: 'Python', slug: 'python' },
+  { name: 'Java', slug: 'openjdk' },
+  { name: 'C++', slug: 'cplusplus' },
+  { name: 'Tailwind CSS', slug: 'tailwindcss' },
+  { name: 'Framer Motion', slug: 'framer' },
+  { name: 'Supabase', slug: 'supabase' },
+  { name: 'MySQL', slug: 'mysql' },
+  { name: 'SQLite', slug: 'sqlite' },
+  { name: 'Docker', slug: 'docker' },
+  { name: 'Git', slug: 'git' },
+  { name: 'Vercel', slug: 'vercel' },
 ];
 
-const ROW_1 = IMAGES.slice(0, 11);
-const ROW_2 = IMAGES.slice(11);
+const ROW_1 = TECHS.slice(0, 7);
+const ROW_2 = TECHS.slice(7);
 
-function Tile({ src }: { src: string }) {
+function Chip({ tech }: { tech: Tech }) {
   return (
-    <img
-      src={src}
-      alt=""
-      loading="lazy"
-      className="rounded-2xl object-cover"
-      style={{ width: 420, height: 270, flexShrink: 0 }}
-    />
+    <div
+      className="flex items-center gap-3 sm:gap-4 rounded-2xl border border-[#D7E2EA]/15 bg-[#D7E2EA]/[0.03] px-5 sm:px-7 py-3.5 sm:py-4"
+      style={{ flexShrink: 0 }}
+    >
+      <img
+        src={`https://cdn.simpleicons.org/${tech.slug}/D7E2EA`}
+        alt=""
+        loading="lazy"
+        className="h-7 w-7 sm:h-8 sm:w-8 object-contain"
+        onError={(e) => {
+          e.currentTarget.style.display = 'none';
+        }}
+      />
+      <span
+        className="text-[#D7E2EA] font-medium uppercase tracking-wide whitespace-nowrap"
+        style={{ fontSize: 'clamp(0.95rem, 1.4vw, 1.25rem)' }}
+      >
+        {tech.name}
+      </span>
+    </div>
   );
 }
 
@@ -47,8 +59,7 @@ export default function MarqueeSection() {
     const onScroll = () => {
       const el = sectionRef.current;
       if (!el) return;
-      const sectionTop = el.offsetTop;
-      setOffset((window.scrollY - sectionTop + window.innerHeight) * 0.3);
+      setOffset((window.scrollY - el.offsetTop + window.innerHeight) * 0.3);
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
@@ -64,21 +75,21 @@ export default function MarqueeSection() {
       className="pt-24 sm:pt-32 md:pt-40 pb-10 overflow-hidden"
       style={{ background: '#0C0C0C' }}
     >
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-4">
         <div
-          className="flex gap-3"
+          className="flex gap-4"
           style={{ transform: `translateX(${offset - 200}px)`, willChange: 'transform' }}
         >
-          {row1.map((src, i) => (
-            <Tile key={`r1-${i}`} src={src} />
+          {row1.map((t, i) => (
+            <Chip key={`r1-${i}`} tech={t} />
           ))}
         </div>
         <div
-          className="flex gap-3"
+          className="flex gap-4"
           style={{ transform: `translateX(${-(offset - 200)}px)`, willChange: 'transform' }}
         >
-          {row2.map((src, i) => (
-            <Tile key={`r2-${i}`} src={src} />
+          {row2.map((t, i) => (
+            <Chip key={`r2-${i}`} tech={t} />
           ))}
         </div>
       </div>
