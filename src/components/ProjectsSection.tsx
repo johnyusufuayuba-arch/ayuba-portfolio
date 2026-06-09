@@ -1,6 +1,3 @@
-import { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import type { MotionValue } from 'framer-motion';
 import { Github } from 'lucide-react';
 import FadeIn from './FadeIn';
 import LiveProjectButton from './LiveProjectButton';
@@ -73,26 +70,14 @@ function RepoButton({ href }: { href: string }) {
   );
 }
 
-function ProjectCard({
-  project,
-  index,
-  total,
-  progress,
-}: {
-  project: Project;
-  index: number;
-  total: number;
-  progress: MotionValue<number>;
-}) {
-  const targetScale = 1 - (total - 1 - index) * 0.03;
-  const scale = useTransform(progress, [index / total, 1], [1, targetScale]);
+function ProjectCard({ project }: { project: Project }) {
   const isCode = !!project.repoUrl;
 
   return (
-    <div className="h-[85vh] flex items-center justify-center sticky top-24 md:top-32">
-      <motion.div
-        style={{ scale, top: `${index * 28}px`, background: '#0C0C0C' }}
+    <FadeIn y={40} className="w-full">
+      <div
         className="relative w-full rounded-[40px] sm:rounded-[50px] md:rounded-[60px] border-2 border-[#D7E2EA] p-4 sm:p-6 md:p-8"
+        style={{ background: '#0C0C0C' }}
       >
         {/* Top row */}
         <div className="flex items-center justify-between gap-4 mb-4 sm:mb-6">
@@ -183,18 +168,12 @@ function ProjectCard({
             </div>
           </div>
         )}
-      </motion.div>
-    </div>
+      </div>
+    </FadeIn>
   );
 }
 
 export default function ProjectsSection() {
-  const container = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: container,
-    offset: ['start start', 'end end'],
-  });
-
   return (
     <section
       id="work"
@@ -210,15 +189,9 @@ export default function ProjectsSection() {
         <span style={{ fontSize: 'clamp(3rem, 12vw, 160px)' }}>Projects</span>
       </FadeIn>
 
-      <div ref={container}>
-        {PROJECTS.map((project, i) => (
-          <ProjectCard
-            key={project.num}
-            project={project}
-            index={i}
-            total={PROJECTS.length}
-            progress={scrollYProgress}
-          />
+      <div className="flex flex-col gap-8 sm:gap-10 md:gap-12 max-w-6xl mx-auto">
+        {PROJECTS.map((project) => (
+          <ProjectCard key={project.num} project={project} />
         ))}
       </div>
     </section>
